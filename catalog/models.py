@@ -23,6 +23,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2, **NULLABLE)
     created_at = models.DateField()
     update_at = models.DateField()
+    manufactured_at = models.DateField()
 
     def __str__(sefl):
         return f'{produc_name} {price} {quantity} {category_name}'
