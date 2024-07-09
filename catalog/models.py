@@ -21,9 +21,9 @@ class Product(models.Model):
     product_image = models.ImageField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=6, decimal_places=2, **NULLABLE)
-    created_at = models.DateField()
-    update_at = models.DateField()
-    manufactured_at = models.DateField()
+    created_at = models.DateField(**NULLABLE)
+    update_at = models.DateField(**NULLABLE)
+    manufactured_at = models.DateField(**NULLABLE)
 
     def __str__(sefl):
         return f'{produc_name} {price} {quantity} {category_name}'
