@@ -9,17 +9,17 @@
 
 <div class="container overflow-hidden">
     <div class="row text-center gy-5">
-        {% for product in products %}
+        {% for object in object_list %}
             <div class="col-3">
                 <div class="card mb-4 box-shadow h-100">
                     <div class="card-header">
-                        <h4 class="my-0 font-weight-normal">{{ product.product_name }}</h4>
+                        <h4 class="my-0 font-weight-normal">{{ object.product_name }}</h4>
                     </div>
                     <div class="card-body ">
-                        <h1 class="card-title pricing-card-title">{{ product.price }}р</h1>
-                        <img src="{{ product.product_image | media_filter}}" class="img-fluid">
-                        <p>{{ product.product_description | slice:20 }}...</p>
-                        <a role="button" href="{% url 'catalog:product' product.pk %}" class=" btn btn-lg btn-block btn-outline-primary">Подробнее</a>
+                        <h1 class="card-title pricing-card-title">{{ object.price }}р</h1>
+                        <img src="{{ object.product_image | media_filter}}" class="img-fluid">
+                        <p>{{ object.product_description | slice:20 }}...</p>
+                        <a role="button" href="{% url 'catalog:product_detail' object.pk %}" class=" btn btn-lg btn-block btn-outline-primary">Подробнее</a>
                     </div>
                 </div>
             </div>

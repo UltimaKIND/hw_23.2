@@ -1,5 +1,12 @@
 from django.shortcuts import render, get_object_or_404
+from django.views.generic import ListView, DetailView
 from catalog.models import Product
+
+class ProductListView(ListView):
+    model = Product 
+
+class ProductDetailView(DetailView):
+    model = Product
 
 def contacts(request):
     if request.method == 'POST':
@@ -8,15 +15,5 @@ def contacts(request):
         message = request.POST.get('message')
         print(f'{name} {phone} {message}')
 
-    return render(request, 'contacts.html')
-
-def products_list(request):
-    products = Product.objects.all()
-    context = {'products': products}
-    return render(request, 'home.html', context)
-
-def product(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    context = {'product': product}
-    return render(request, 'product.html', context)
+    return render(request, 'catalog/contacts.html')
 
