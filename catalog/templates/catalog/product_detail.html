@@ -21,6 +21,13 @@
                     <p>{{ object.product_description }}</p>
                     <a role="button" href="{% url 'catalog:product_list' %}" class="btn btn-lg btn-block btn-outline-primary">Назад</a>
                 </div>
+		<div class="card-footer">
+		  <div class="btn-group">
+		    <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'catalog:edit' object.pk %}">edit</a>
+		    <a type="button" class="btn btn-sm btn-outline-secondary text-danger" href="{% url 'catalog:delete' object.pk %}">delete</a>
+                    <a role="button" href="{% url 'catalog:product_list' %}" class="btn btn-sm btn-outline-secondary">Назад</a>
+                  </div>
+                </div>
             </div>
         </div>
     </div>

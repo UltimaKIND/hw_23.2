@@ -1,9 +1,19 @@
+from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models.base import Model as Model
 from django.db.models.query import QuerySet
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from blog.models import Post
 from pytils.translit import slugify
+
+def view_all(request):
+    posts = Post.objects.all()
+    context = {
+            'object_list': posts,
+            'title': 'все посты'
+            }
+    
+    return render(request, 'blog/view_all.html', context)
 
 class PostCreateView(CreateView):
     model = Post
@@ -57,4 +67,15 @@ class PostDeleteView(DeleteView):
     model = Post
     success_url = reverse_lazy('blog:list')
 
+
+
+def published_toggle(request, pk):
+    post = get_object_or_404(Post, pk=pk) 
+    if post.is_published:
+        post.is_published = False
+    else:
+        post.is_published = True
+
+    post.save()
+    return redirect(reverse('blog:view_all'))
 

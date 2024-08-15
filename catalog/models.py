@@ -9,7 +9,7 @@ class Category(models.Model):
     products_in_category = models.IntegerField(**NULLABLE)
 
     def __str__(self):
-        return f'{self.category_name} содержит {self.description}'
+        return f'{self.pk} - {self.category_name}'
 
     class Meta:
         verbose_name = 'категория'
