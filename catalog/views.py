@@ -5,10 +5,11 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView, TemplateView
 from catalog.models import Product
 from pytils.translit import slugify
+from catalog.forms import ProductForm
 
 class ProductCreateView(CreateView):
     model = Product
-    fields = ('product_name', 'product_description', 'category', 'product_image', 'price')
+    form_class = ProductForm
     success_url = reverse_lazy('catalog:product_list')
 
     def form_valid(self, form):
