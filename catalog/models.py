@@ -50,20 +50,23 @@ class Product(models.Model):
 class Release(models.Model):
     product = models.ForeignKey(
         Product,
-        related_name='release',
         on_delete=models.CASCADE,
         verbose_name='Продукт',
-        help_text='Выберите продукт',),
+        help_text='Выберите продукт',
+        default = 'empty',)
 
     version = models.DecimalField(
         max_digits=4,
         decimal_places=2,
-        help_text='Введите номер версии продукта',),
+        default=00.01,
+        verbose_name='Номер версии',
+        help_text='Введите номер версии продукта',)
 
     version_name = models.CharField(
         max_length=100, 
         verbose_name='название версии',
-        help_text='Введите имя версии продукта',),
+        help_text='Введите имя версии продукта',
+        **NULLABLE,)
         
     is_active = models.BooleanField(
         default=False,
@@ -75,5 +78,5 @@ class Release(models.Model):
     class Meta:
         verbose_name = 'версия'
         verbose_name_plural = 'версии'
-        ordering = [-1]
+        ordering = ('version_name',)
 
