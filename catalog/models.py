@@ -46,3 +46,34 @@ class Product(models.Model):
         verbose_name = 'продукт'
         verbose_name_plural = 'продукты'
         ordering = ('product_name',)
+
+class Release(models.Model):
+    product = models.ForeignKey(
+        Product,
+        related_name='release',
+        on_delete=models.CASCADE,
+        verbose_name='Продукт',
+        help_text='Выберите продукт',),
+
+    version = models.DecimalField(
+        max_digits=4,
+        decimal_places=2,
+        help_text='Введите номер версии продукта',),
+
+    version_name = models.CharField(
+        max_length=100, 
+        verbose_name='название версии',
+        help_text='Введите имя версии продукта',),
+        
+    is_active = models.BooleanField(
+        default=False,
+        help_text='Укажите является ли версия активной',)
+
+    def __str__(self):
+        return f'{self.product.product_name} имеет версию {self.version} c именем {self.version_name} {"активная" if self.is_active else "неактивная"}'
+    
+    class Meta:
+        verbose_name = 'версия'
+        verbose_name_plural = 'версии'
+        ordering = [-1]
+

@@ -5,4 +5,4 @@ from catalog.models import Product
 class ProductForm(ModelForm):
     class Meta:
         model = Product
-        fields = '__all__' 
+        exclude = ('created_at', 'update_at')
