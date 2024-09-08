@@ -1,4 +1,5 @@
 from django.forms import ModelForm, BooleanField
+from django.core.exceptions import ValidationError
 
 from catalog.models import Product, Release
 
@@ -17,6 +18,22 @@ class ProductForm(StyleFormMixin, ModelForm):
     class Meta:
         model = Product
         exclude = ('created_at', 'update_at')
+
+    def clean_product_name(self):
+        prohibited = ['казино', 'криптовалюта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция', 'радар']
+        product_name = self.cleaned_data['product_name']
+        if product_name in prohibited:
+            raise ValidationError('запрещенные слова!')
+        else:
+            return product_name
+        
+    def clean_product_description(self):
+        prohibited = ['казино', 'криптовалюта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция', 'радар']
+        product_description = self.cleaned_data['product_description']
+        if product_description in prohibited:
+            raise ValidationError('запрещенные слова!')
+        else:
+            return product_description
 
 class ReleaseForm(StyleFormMixin, ModelForm):
     class Meta:
