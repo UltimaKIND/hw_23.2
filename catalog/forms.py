@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 
 from catalog.models import Product, Release
 
+# класс-миксин для стилизации форм
 class StyleFormMixin:
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -14,11 +15,13 @@ class StyleFormMixin:
                 
             
 
+# форма для продукта
 class ProductForm(StyleFormMixin, ModelForm):
     class Meta:
         model = Product
         exclude = ('created_at', 'update_at')
 
+# валидация поля product_name
     def clean_product_name(self):
         prohibited = ['казино', 'криптовалюта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция', 'радар']
         product_name = self.cleaned_data['product_name']
@@ -27,6 +30,7 @@ class ProductForm(StyleFormMixin, ModelForm):
         else:
             return product_name
         
+# валидация поля product_description
     def clean_product_description(self):
         prohibited = ['казино', 'криптовалюта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция', 'радар']
         product_description = self.cleaned_data['product_description']
@@ -35,6 +39,7 @@ class ProductForm(StyleFormMixin, ModelForm):
         else:
             return product_description
 
+# форма версии продукта
 class ReleaseForm(StyleFormMixin, ModelForm):
     class Meta:
         model = Release

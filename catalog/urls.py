@@ -20,6 +20,7 @@ from catalog.views import ContactsPageView, ProductCreateView, ProductListView, 
 
 app_name = CatalogConfig.name
 
+# урлы
 urlpatterns = [
     path('create', ProductCreateView.as_view(), name='create'),
     path('', ProductListView.as_view(), name='product_list'),

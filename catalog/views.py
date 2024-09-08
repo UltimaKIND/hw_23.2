@@ -8,6 +8,7 @@ from pytils.translit import slugify
 from catalog.forms import ProductForm, ReleaseForm
 from django.forms import inlineformset_factory
 
+# контроллер для страницы создания нового продукта
 class ProductCreateView(CreateView):
     model = Product
     form_class = ProductForm
@@ -25,6 +26,7 @@ class ProductCreateView(CreateView):
             return self.render_to_response(self.get_context_data(form=form, formset=formset))
 
 
+# контроллер для страницы редактирования продукта
 class ProductUpdateView(UpdateView):
     model = Product
     form_class = ProductForm
@@ -53,16 +55,20 @@ class ProductUpdateView(UpdateView):
         else:
             return self.render_to_response(self.get_context_data(form=form, formset=formset))
 
+# контроллер для страницы отображения списка продуктов
 class ProductListView(ListView):
     model = Product
 
+# контроллер для страницы детального отображения продукта
 class ProductDetailView(DetailView):
     model = Product
 
+# контроллер для страницы подтверждения удаления продукта
 class ProductDeleteView(DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:product_list')
 
+# контроллер для страницы контактов
 class ContactsPageView(TemplateView):
     template_name = 'catalog/contacts.html'
 

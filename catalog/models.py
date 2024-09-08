@@ -1,8 +1,10 @@
 from django.db import models
 from datetime import datetime
 
+# константа для полей с возможными нулевыми значениями
 NULLABLE = {'blank': True, 'null': True}
 
+# модель категорий продуктов
 class Category(models.Model):
     category_name = models.CharField(max_length=100, 
         verbose_name='название категории')
@@ -19,6 +21,7 @@ class Category(models.Model):
         verbose_name_plural = 'категории'
         ordering = ('category_name',)
 
+# модель продуктов
 class Product(models.Model):
     product_name = models.CharField(
         max_length=100, 
@@ -47,6 +50,7 @@ class Product(models.Model):
         verbose_name_plural = 'продукты'
         ordering = ('product_name',)
 
+# модель версий продуктов
 class Release(models.Model):
     product = models.ForeignKey(
         Product,
