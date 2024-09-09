@@ -10,24 +10,26 @@
 <div class="container overflow-hidden">
     <div class="row text-center gy-5">
         {% for object in object_list %}
-            <div class="col-3">
-                <div class="card mb-4 box-shadow h-100">
-                    <div class="card-header">
-                        <h4 class="my-0 font-weight-normal">{{ object.product_name }}</h4>
-                        <h6 class="my-0 text-muted">version</h6> 
-                    </div>
-                    <div class="card-body">
-                        <h1 class="card-title pricing-card-title">{{ object.price }}р</h1>
-                        <img src="{{ object.product_image | media_filter}}" class="img-fluid">
-			<div class="align-self-end">
-                            <p>{{ object.product_description | slice:20 }}...</p>
-			</div>
-		    </div>
-		    <div class="card-footer">
-                        <a role="button" href="{% url 'catalog:product_detail' object.pk %}" class=" btn btn-lg btn-block btn-outline-primary">Подробнее</a>
+            {% if object.active_version %}
+                <div class="col-3">
+                    <div class="card mb-4 box-shadow h-100">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal">{{ object.product_name }}</h4>
+                            <h6 class="my-0 text-muted">version {{  object.active_version }}</h6> 
+                        </div>
+                        <div class="card-body">
+                                <h1 class="card-title pricing-card-title">{{ object.price }}р</h1>
+                                <img src="{{ object.product_image | media_filter}}" class="img-fluid">
+			                <div class="align-self-end">
+                                <p>{{ object.product_description | slice:20 }}...</p>
+			                </div>
+		                </div>
+		                <div class="card-footer">
+                            <a role="button" href="{% url 'catalog:product_detail' object.pk %}" class=" btn btn-lg btn-block btn-outline-primary">Подробнее</a>
+                        </div>
                     </div>
                 </div>
-            </div>
+            {% endif %}
         {% endfor %}
     </div>
 {% endblock %}

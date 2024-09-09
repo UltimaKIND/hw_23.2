@@ -42,6 +42,11 @@ class Product(models.Model):
     update_at = models.DateField(
         default=datetime.now)
 
+# возвращает строку сожержащую номер активной версии, если нет активной версии возвращает None
+    @property
+    def active_version(self):
+        return  Release.objects.filter(product=self, is_active=True).first()
+
     def __str__(self):
         return f'{self.product_name} стоит {self.price} находится в {self.category}'
 
@@ -77,8 +82,8 @@ class Release(models.Model):
         help_text='Укажите является ли версия активной',)
 
     def __str__(self):
-        return f'{self.product.product_name} имеет версию {self.version} c именем {self.version_name} {"активная" if self.is_active else "неактивная"}'
-    
+        return f'{self.version} {"активная" if self.is_active else "неактивная"}'
+
     class Meta:
         verbose_name = 'версия'
         verbose_name_plural = 'версии'
