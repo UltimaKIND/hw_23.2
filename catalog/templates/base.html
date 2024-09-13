@@ -8,13 +8,21 @@
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
 </head>
 <body>
-<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
-    <h5 class="my-0 mr-md-auto font-weight-normal">Skystore</h5>
-    <nav class="ms-5">
-        <a class="p-2 btn btn-outline-primary" href="/">Каталог</a>
-        <a class="p-2 btn btn-outline-primary" href="/contacts/">Контакты</a>
-        <a class="p-2 btn btn-outline-primary" href="/blog/">Блог</a>
-    </nav>
+<div class="flex-md-row">
+    <div class="d-flex p-3 px-md-4 mb-3 bg-white border-bottom box-shadow justify-content-between">
+        <div class="d-inline-flex">
+            <h5 class="my-0 mr-md-auto font-weight-normal">Skystore</h5>
+            <nav class="ms-5">
+                <a class="p-2 btn btn-outline-primary" href="/">Каталог</a>
+                <a class="p-2 btn btn-outline-primary" href="/contacts/">Контакты</a>
+                <a class="p-2 btn btn-outline-primary" href="/blog/">Блог</a>
+            </nav>
+        </div>
+        <nav class="nav flex-column">
+            <a class="nav-link-active" href="#">войти</a>
+            <a class="nav-link-active" href="#">профиль</a>
+        </nav>
+    </div>
 </div>
 {% block content %}
 {% endblock %}
