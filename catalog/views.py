@@ -1,16 +1,16 @@
 from django.db.models.base import Model as Model
-from django.db.models.query import QuerySet
 from django.urls import reverse_lazy, reverse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView, TemplateView
 from catalog.models import Product, Release
-from pytils.translit import slugify
 from catalog.forms import ProductForm, ReleaseForm
 from django.forms import inlineformset_factory
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-# контроллер для страницы создания нового продукта
 class ProductCreateView(LoginRequiredMixin, CreateView):
+    """
+    контроллер для страницы создания нового продукта
+    """
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:product_list')
@@ -39,8 +39,10 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
             return self.render_to_response(self.get_context_data(form=form, formset=formset))
 
 
-# контроллер для страницы редактирования продукта
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
+    """
+    контроллер для страницы редактирования продукта
+    """
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:product_list')
@@ -71,21 +73,29 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
         else:
             return self.render_to_response(self.get_context_data(form=form, formset=formset))
 
-# контроллер для страницы отображения списка продуктов
 class ProductListView(ListView):
+    """
+    контроллер для страницы отображения списка продуктов
+    """
     model = Product
 
-# контроллер для страницы детального отображения продукта
 class ProductDetailView(DetailView):
+    """
+    контроллер для страницы детального отображения продукта
+    """
     model = Product
 
-# контроллер для страницы подтверждения удаления продукта
 class ProductDeleteView(LoginRequiredMixin, DeleteView):
+    """
+    контроллер для страницы подтверждения удаления продукта
+    """
     model = Product
     success_url = reverse_lazy('catalog:product_list')
 
-# контроллер для страницы контактов
 class ContactsPageView(TemplateView):
+    """
+    контроллер для страницы контактов
+    """
     template_name = 'catalog/contacts.html'
 
     def post(self, request):
@@ -94,5 +104,4 @@ class ContactsPageView(TemplateView):
         message = request.POST.get('message')
         print(f'{name} ({phone}) "{message}"')
         return render(request, 'catalog/contacts.html')
-
 

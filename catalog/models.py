@@ -5,8 +5,10 @@ from datetime import datetime
 # константа для полей с возможными нулевыми значениями
 NULLABLE = {'blank': True, 'null': True}
 
-# модель категорий продуктов
 class Category(models.Model):
+    """
+    модель категорий продуктов
+    """
     category_name = models.CharField(max_length=100, 
         verbose_name='название категории')
     description = models.TextField(
@@ -22,8 +24,10 @@ class Category(models.Model):
         verbose_name_plural = 'категории'
         ordering = ('category_name',)
 
-# модель продуктов
 class Product(models.Model):
+    """
+    модель продуктов
+    """
     product_name = models.CharField(
         max_length=100, 
         verbose_name='название продукта')
@@ -62,8 +66,10 @@ class Product(models.Model):
         verbose_name_plural = 'продукты'
         ordering = ('product_name',)
 
-# модель версий продуктов
 class Release(models.Model):
+    """
+    модель версий продуктов
+    """
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,

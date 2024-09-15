@@ -3,15 +3,16 @@ from django.core.mail import send_mail
 from django.db.models.base import Model as Model
 from config.settings import EMAIL_HOST_USER
 from django.shortcuts import get_object_or_404, redirect
-from django.db.models.query import QuerySet
 from django.views.generic import CreateView, UpdateView
 from django.contrib.auth.views import PasswordResetView
-from django import forms
 from django.urls import reverse_lazy, reverse
 from users.models import User
 from users.forms import UserRegistrationForm, UserProfileForm, PasswordForm
 
 class RegisterView(CreateView):
+    """
+    контроллер регистрации пользователя
+    """
     model = User
     form_class = UserRegistrationForm
     success_url = reverse_lazy('users:login')
@@ -38,8 +39,10 @@ def email_verification(request, token):
     user.save()
     return redirect(reverse('users:login'))
 
-
 class ProfileView(UpdateView):
+    """
+    контроллер редактирования профиля пользователя
+    """
     model = User
     form_class = UserProfileForm
     success_url = reverse_lazy('users:profile')
@@ -49,6 +52,7 @@ class ProfileView(UpdateView):
 
 class NewPasswordView(PasswordResetView):
     """
+    контроллер сброса пароля пользователя
     """
     model = User
     form_class = PasswordForm

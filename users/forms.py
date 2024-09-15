@@ -4,12 +4,18 @@ from django import forms
 from users.models import User
 
 class UserRegistrationForm(StyleFormMixin, UserCreationForm):
+    """
+    Форма регистрации пользователя
+    """
     
     class Meta:
         model = User
         fields = ('email', 'password1', 'password2')
 
 class UserProfileForm(StyleFormMixin, UserChangeForm):
+    """
+    Форма профиля пользователя
+    """
 
     class Meta:
         model = User
@@ -21,6 +27,9 @@ class UserProfileForm(StyleFormMixin, UserChangeForm):
         self.fields['password'].widget = forms.HiddenInput()
 
 class PasswordForm(StyleFormMixin, PasswordResetForm):
+    """
+    Форма сброса пароля
+    """
     class Meta:
         model = User
         fields = ('email',)

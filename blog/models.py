@@ -4,6 +4,9 @@ from datetime import datetime
 NULLABLE = {'null':True, 'blank':True}
 
 class Post(models.Model):
+    """
+    модель поста
+    """
     title = models.CharField(max_length=150, verbose_name='заголовок')
     slug = models.CharField(max_length=150, verbose_name='slug', **NULLABLE)
     content = models.TextField(verbose_name='содержимое', **NULLABLE)
