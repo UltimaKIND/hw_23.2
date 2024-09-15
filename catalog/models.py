@@ -1,4 +1,5 @@
 from django.db import models
+from users.models import User
 from datetime import datetime
 
 # константа для полей с возможными нулевыми значениями
@@ -41,6 +42,12 @@ class Product(models.Model):
         default=datetime.now)
     update_at = models.DateField(
         default=datetime.now)
+    owner = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        verbose_name='product_creator',
+        **NULLABLE
+    )
 
 # возвращает строку сожержащую номер активной версии, если нет активной версии возвращает None
     @property

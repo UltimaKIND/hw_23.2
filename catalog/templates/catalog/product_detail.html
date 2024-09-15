@@ -19,14 +19,16 @@
                         <img src="{{ object.product_image | media_filter }}" class="img-fluid">
                     </div>
                     <p>{{ object.product_description }}</p>
-                    <a role="button" href="{% url 'catalog:product_list' %}" class="btn btn-lg btn-block btn-outline-primary">Назад</a>
                 </div>
-		<div class="card-footer">
-		  <div class="btn-group">
-		    <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'catalog:edit' object.pk %}">edit</a>
-		    <a type="button" class="btn btn-sm btn-outline-secondary text-danger" href="{% url 'catalog:delete' object.pk %}">delete</a>
-                    <a role="button" href="{% url 'catalog:product_list' %}" class="btn btn-sm btn-outline-secondary">Назад</a>
-                  </div>
+		        <div class="card-footer">
+                    <p>creator: {{ object.owner }}</p>
+		            <div class="btn-group">
+                        {% if user.is_authenticated %}
+		                <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'catalog:edit' object.pk %}">edit</a>
+		                <a type="button" class="btn btn-sm btn-outline-secondary text-danger" href="{% url 'catalog:delete' object.pk %}">delete</a>
+                        {% endif %}
+                        <a role="button" href="{% url 'catalog:product_list' %}" class="btn btn-sm btn-outline-secondary">Назад</a>
+                    </div>
                 </div>
             </div>
         </div>

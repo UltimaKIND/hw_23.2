@@ -12,14 +12,12 @@ class StyleFormMixin:
                 field.widget.attrs['class'] = "form-check-input"
             else:
                 field.widget.attrs['class'] = "form-control"
-                
-            
 
 # форма для продукта
 class ProductForm(StyleFormMixin, ModelForm):
     class Meta:
         model = Product
-        exclude = ('created_at', 'update_at')
+        exclude = ('created_at', 'update_at', 'owner')
 
 # валидация поля product_name
     def clean_product_name(self):

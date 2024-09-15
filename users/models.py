@@ -1,7 +1,8 @@
 from django.contrib.auth.models import AbstractUser
-from django.forms import CharField
-from catalog.models import NULLABLE
 from django.db import models
+
+NULLABLE = {'blank': True, 'null': True}
+
 
 class User(AbstractUser):
     username = None

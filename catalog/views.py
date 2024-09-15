@@ -7,17 +7,30 @@ from catalog.models import Product, Release
 from pytils.translit import slugify
 from catalog.forms import ProductForm, ReleaseForm
 from django.forms import inlineformset_factory
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # контроллер для страницы создания нового продукта
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:product_list')
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        ReleaseFormset = inlineformset_factory(Product, Release, ReleaseForm, extra=1)
+        if self.request.method == 'POST':
+            context_data['formset'] = ReleaseFormset(self.request.POST, instance=self.object)
+        else:
+            context_data['formset'] = ReleaseFormset(instance=self.object)
+        return context_data 
 
     def form_valid(self, form):
         context_data = self.get_context_data()
         formset = context_data['formset']
         if form.is_valid() and formset.is_valid():
+            product = form.save()
+            product.owner = self.request.user
+            product.save()
             self.object = form.save()
             formset.instance = self.object
             formset.save()
@@ -27,7 +40,7 @@ class ProductCreateView(CreateView):
 
 
 # контроллер для страницы редактирования продукта
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:product_list')
@@ -48,6 +61,9 @@ class ProductUpdateView(UpdateView):
         context_data = self.get_context_data()
         formset = context_data['formset']
         if form.is_valid() and formset.is_valid():
+            product = form.save()
+            product.owner = self.request.user
+            product.save()
             self.object = form.save()
             formset.instance = self.object
             formset.save()
@@ -64,7 +80,7 @@ class ProductDetailView(DetailView):
     model = Product
 
 # контроллер для страницы подтверждения удаления продукта
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:product_list')
 
