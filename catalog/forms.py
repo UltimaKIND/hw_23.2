@@ -3,17 +3,20 @@ from django.core.exceptions import ValidationError
 
 from catalog.models import Product, Release
 
+
 class StyleFormMixin:
     """
     класс-миксин для стилизации форм
     """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            if isinstance (field, BooleanField):
-                field.widget.attrs['class'] = "form-check-input"
+            if isinstance(field, BooleanField):
+                field.widget.attrs['class'] = "form-checked-input"
             else:
                 field.widget.attrs['class'] = "form-control"
+
 
 class ProductForm(StyleFormMixin, ModelForm):
     """
@@ -27,23 +30,33 @@ class ProductForm(StyleFormMixin, ModelForm):
         """
         валидация поля product_name
         """
-        prohibited = ['казино', 'криптовалюта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция', 'радар']
+        prohibited = ['казино', 'криптовалюта', 'биржа',
+                      'дешево', 'бесплатно', 'обман', 'полиция', 'радар']
         product_name = self.cleaned_data['product_name']
         if product_name in prohibited:
             raise ValidationError('запрещенные слова!')
         else:
             return product_name
-        
+
     def clean_product_description(self):
         """
         валидация поля product_description
         """
-        prohibited = ['казино', 'криптовалюта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция', 'радар']
+        prohibited = ['казино', 'криптовалюта', 'биржа',
+                      'дешево', 'бесплатно', 'обман', 'полиция', 'радар']
         product_description = self.cleaned_data['product_description']
         if product_description in prohibited:
             raise ValidationError('запрещенные слова!')
         else:
             return product_description
+
+
+class ModeratorProductForm(ProductForm):
+
+    class Meta:
+        model = Product
+        fields = ('product_description', 'category')
+
 
 class ReleaseForm(StyleFormMixin, ModelForm):
     """
@@ -52,3 +65,10 @@ class ReleaseForm(StyleFormMixin, ModelForm):
     class Meta:
         model = Release
         fields = '__all__'
+
+
+class ModeratorReleaseForm(ReleaseForm):
+
+    class Meta:
+        model = Release
+        fields = ('is_active',)
