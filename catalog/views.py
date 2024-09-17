@@ -60,12 +60,12 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
         user = self.request.user
-        if user.has_perm('catalog.can_edit_product_description') and ('catalgo.can_edit_category') and ('catalog.can_edit_is_active') and not user.is_superuser:
-            ReleaseFormset = inlineformset_factory(
-                Product, Release, ModeratorReleaseForm, extra=1, can_delete=False)
-        else:
+        if user.is_superuser:
             ReleaseFormset = inlineformset_factory(
                 Product, Release, ReleaseForm, extra=1)
+        else:
+            ReleaseFormset = inlineformset_factory(
+                Product, Release, ModeratorReleaseForm, extra=1, can_delete=False)
         if self.request.method == 'POST':
             context_data['formset'] = ReleaseFormset(
                 self.request.POST, instance=self.object)
@@ -90,7 +90,7 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_form_class(self):
         user = self.request.user
-        if user.has_perm('catalog.can_edit_product_description') and ('catalog.can_edit_category') and ('catalog.can_edit_is_active'):
+        if user.has_perm('catalog.change_product') or self.object.owner == user:
             return ModeratorProductForm
         raise PermissionDenied
 
