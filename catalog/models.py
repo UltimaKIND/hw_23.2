@@ -98,8 +98,7 @@ class Release(models.Model):
         **NULLABLE,)
 
     is_active = models.BooleanField(
-        default=False,
-        help_text='Укажите является ли версия активной',)
+        default=False)
 
     def __str__(self):
         return f'{self.version} {"активная" if self.is_active else "неактивная"}'
@@ -110,4 +109,5 @@ class Release(models.Model):
         ordering = ('version_name',)
         permissions = [
             ('can_edit_is_active', 'can cancel publication'),
+            ('can_edit_version', 'can edit version'),
         ]

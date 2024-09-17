@@ -50,6 +50,14 @@ class ProductForm(StyleFormMixin, ModelForm):
         else:
             return product_description
 
+    def clean_is_active(self):
+        product = self.instance
+        verions = product.version_set.all()
+        cleaned_data = self.cleaned_data['is_active']
+        if verions.filter(is_active=True).exists() and cleaned_data:
+            raise ValidationError('error')
+        return cleaned_data
+
 
 class ModeratorProductForm(ProductForm):
 
@@ -71,4 +79,4 @@ class ModeratorReleaseForm(ReleaseForm):
 
     class Meta:
         model = Release
-        fields = ('is_active',)
+        fields = ('is_active', 'version_name')
