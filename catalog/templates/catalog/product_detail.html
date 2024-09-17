@@ -25,7 +25,9 @@
 		            <div class="btn-group">
                         {% if user.is_authenticated %}
                             {% if request.user == object.owner or perms.catalog.change_product %}
-		                        <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'catalog:edit' object.pk %}">edit</a>
+                                {% if object.active_version %}
+		                            <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'catalog:edit' object.pk %}">edit</a>
+                                {% endif %}
                             {% endif %}
                             {% if perms.product.can_delete_product %}
                                 <a type="button" class="btn btn-sm btn-outline-secondary text-danger" href="{% url 'catalog:delete' object.pk %}">delete</a>
