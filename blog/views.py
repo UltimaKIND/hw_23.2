@@ -5,17 +5,19 @@ from django.views.generic import CreateView, ListView, DetailView, UpdateView, D
 from blog.models import Post
 from pytils.translit import slugify
 
+
 def view_all(request):
     """
     просмотр всех постов
     """
     posts = Post.objects.all()
     context = {
-            'object_list': posts,
-            'title': 'все посты'
-            }
-    
+        'object_list': posts,
+        'title': 'все посты'
+    }
+
     return render(request, 'blog/view_all.html', context)
+
 
 class PostCreateView(CreateView):
     """
@@ -32,6 +34,7 @@ class PostCreateView(CreateView):
             new_post.save()
 
         return super().form_valid(form)
+
 
 class PostUpdateView(UpdateView):
     """
@@ -50,7 +53,8 @@ class PostUpdateView(UpdateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return(reverse('blog:view', args=[self.kwargs.get('pk')]))
+        return (reverse('blog:view', args=[self.kwargs.get('pk')]))
+
 
 class PostListView(ListView):
     """
@@ -60,9 +64,11 @@ class PostListView(ListView):
 
     def get_queryset(self, *args, **kwargs):
         queryset = super().get_queryset(*args, **kwargs)
-        queryset = queryset.filter(is_published=True)
+        if self.request.user.is_superuser:
+            return queryset
 
-        return queryset
+        return queryset.filter(is_published=True)
+
 
 class PostDetailView(DetailView):
     """
@@ -77,6 +83,7 @@ class PostDetailView(DetailView):
 
         return self.object
 
+
 class PostDeleteView(DeleteView):
     """
     контроллер удаления поста
@@ -85,17 +92,15 @@ class PostDeleteView(DeleteView):
     success_url = reverse_lazy('blog:list')
 
 
-
 def published_toggle(request, pk):
     """
     контроллер публикации поста
     """
-    post = get_object_or_404(Post, pk=pk) 
+    post = get_object_or_404(Post, pk=pk)
     if post.is_published:
         post.is_published = False
     else:
         post.is_published = True
 
     post.save()
-    return redirect(reverse('blog:view_all'))
-
+    return redirect(reverse('blog:list'))

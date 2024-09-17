@@ -22,9 +22,20 @@
 		    <div class="card-footer">
 				<div class="btn-group">
 					<a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'blog:view' object.pk %}">view</a>
-					<a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'blog:edit' object.pk %}">edit</a>
-					<a type="button" class="btn btn-sm btn-outline-secondary text-danger" href="{% url 'blog:delete' object.pk %}">delete</a>
+                    {% if perms.blog.can_edit_title and perms.blog.can_edit_content %}
+					    <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'blog:edit' object.pk %}">edit</a>
+                    {% endif %}
+                    {% if perms.blog.can_delete_post %}
+					    <a type="button" class="btn btn-sm btn-outline-secondary text-danger" href="{% url 'blog:delete' object.pk %}">delete</a>
+                    {% endif %}
 					<a type="button" class="btn btn-sm btn-outline-secondary">views: {{ object.views_count }}</a>
+                    {% if perms.blog.can_edit_is_published %}
+                        {% if object.is_published %}
+                        <a type="button" href="{% url 'blog:published_toggle' object.pk %}" class="btn btn-sm btn-outline-secondary text-danger">published</a>
+                        {% else %}
+                        <a type="button" href="{% url 'blog:published_toggle' object.pk %}" class="btn btn-sm btn-outline-secondary">published</a>
+                        {% endif %} 
+                    {% endif %}
 				</div>
                     </div>
                 </div>
