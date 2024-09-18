@@ -4,6 +4,7 @@ catalog/__pycache__/
 media/
 *.py[cod]
 *$py.class
+dump.rdb
 
 # C extensions
 *.so
