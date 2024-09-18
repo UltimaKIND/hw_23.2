@@ -143,7 +143,7 @@ AUTH_USER_MODEL = 'users.User'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-CASHES_ENABLED = True
+CACHES_ENABLED = True
 
 CACHES = {
     "default": {

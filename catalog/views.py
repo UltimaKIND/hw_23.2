@@ -1,6 +1,4 @@
 from django.db.models.base import Model as Model
-from django.forms.models import BaseModelForm
-from django.http.response import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import redirect, render
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView, TemplateView
@@ -9,7 +7,7 @@ from catalog.forms import ProductForm, ReleaseForm, ModeratorProductForm, Modera
 from django.forms import inlineformset_factory
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.core.exceptions import ImproperlyConfigured
+from catalog.services import get_products_from_cache
 
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
@@ -102,6 +100,9 @@ class ProductListView(ListView):
     контроллер для страницы отображения списка продуктов
     """
     model = Product
+
+    def get_queryset(self):
+        return get_products_from_cache()
 
 
 class ProductDetailView(DetailView):
