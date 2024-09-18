@@ -1,9 +1,11 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 catalog/__pycache__/
+config/__pycache__/
 media/
 *.py[cod]
 *$py.class
+dump.rdb
 
 # C extensions
 *.so

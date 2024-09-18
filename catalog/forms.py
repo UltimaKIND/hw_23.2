@@ -50,9 +50,22 @@ class ProductForm(StyleFormMixin, ModelForm):
         else:
             return product_description
 
+    def clean_is_active(self):
+        """
+        валидация поля is_active на уникальность **пока не работает
+        """
+        product = self.instance
+        verions = product.version_set.all()
+        cleaned_data = self.cleaned_data['is_active']
+        if verions.filter(is_active=True).exists() and cleaned_data:
+            raise ValidationError('error')
+        return cleaned_data
+
 
 class ModeratorProductForm(ProductForm):
-
+    """
+    форма версии продукта для модератора
+    """
     class Meta:
         model = Product
         fields = ('product_description', 'category')
@@ -68,7 +81,9 @@ class ReleaseForm(StyleFormMixin, ModelForm):
 
 
 class ModeratorReleaseForm(ReleaseForm):
-
+    """
+    форма версии продукта для модератора
+    """
     class Meta:
         model = Release
-        fields = ('is_active',)
+        fields = ('is_active', 'version_name')

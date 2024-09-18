@@ -1,6 +1,4 @@
 from django.db.models.base import Model as Model
-from django.forms.models import BaseModelForm
-from django.http.response import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import redirect, render
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView, TemplateView
@@ -9,7 +7,7 @@ from catalog.forms import ProductForm, ReleaseForm, ModeratorProductForm, Modera
 from django.forms import inlineformset_factory
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.core.exceptions import ImproperlyConfigured
+from catalog.services import get_products_from_cache
 
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
@@ -60,12 +58,12 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
         user = self.request.user
-        if user.has_perm('catalog.can_edit_product_description') and ('catalgo.can_edit_category') and ('catalog.can_edit_is_active'):
-            ReleaseFormset = inlineformset_factory(
-                Product, Release, ModeratorReleaseForm, extra=1, can_delete=False)
-        else:
+        if user.is_superuser:
             ReleaseFormset = inlineformset_factory(
                 Product, Release, ReleaseForm, extra=1)
+        else:
+            ReleaseFormset = inlineformset_factory(
+                Product, Release, ModeratorReleaseForm, extra=1, can_delete=False)
         if self.request.method == 'POST':
             context_data['formset'] = ReleaseFormset(
                 self.request.POST, instance=self.object)
@@ -90,7 +88,9 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_form_class(self):
         user = self.request.user
-        if user.has_perm('catalog.can_edit_product_description') and ('catalgo.can_edit_category') and ('catalog.can_edit_is_active'):
+        if self.request.user.is_superuser:
+            return ProductForm
+        if user.has_perm('catalog.change_product') or self.object.owner == user:
             return ModeratorProductForm
         raise PermissionDenied
 
@@ -100,6 +100,9 @@ class ProductListView(ListView):
     контроллер для страницы отображения списка продуктов
     """
     model = Product
+
+    def get_queryset(self):
+        return get_products_from_cache()
 
 
 class ProductDetailView(DetailView):
